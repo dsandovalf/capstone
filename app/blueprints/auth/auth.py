@@ -8,12 +8,10 @@ token_auth = HTTPTokenAuth()
 
 @basic_auth.verify_password
 def verify_password(email, password):
-    # check if user exists
     u = User.query.filter_by(email=email).first()
     if u is None:
         return False
     g.current_user = u
-    # check password
     return u.check_hashed_password(password)
 
 @token_auth.verify_token

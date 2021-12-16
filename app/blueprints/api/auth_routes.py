@@ -10,8 +10,6 @@ def get_token():
     token = user.get_token()
     return make_response({"token":token},200)
 
-# makes a user an Admin
-# {"id":5}
 @api.put('/admin')
 @token_auth.login_required()
 def make_admin():

@@ -9,15 +9,12 @@ from .import bp as auth
 def login():
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
-        #do Login stuff
         email = request.form.get("email").lower()
         password = request.form.get("password")
-                                #Database col = form inputted email
         u = User.query.filter_by(email=email).first()
 
         if u and u.check_hashed_password(password):
             login_user(u)
-            # Give the user Feedback thats you logged in successfully
             flash('You have logged in', 'success')
             return redirect(url_for("movie.index"))
         error_string = "Invalid Email password combo"
@@ -44,19 +41,14 @@ def register():
                 "email":form.email.data.lower(),
                 "password": form.password.data,
             }
-            #create and empty user
             new_user_object = User()
-            # build user with form data
             new_user_object.from_dict(new_user_data)
-            # save user to database
             new_user_object.save()
         except:
             error_string = "There was an unexpected Error creating your account. Please Try again."
-            return render_template('register.html.j2',form=form, error = error_string) #when we had an error creating a user
-        return redirect(url_for('auth.login')) # on a post request that successfully creates a new user
-    return render_template('register.html.j2', form = form) #the render template on the Get request
-
-# @auth.route('/user', methods=['POST'])
+            return render_template('register.html.j2',form=form, error = error_string) 
+        return redirect(url_for('auth.login')) 
+    return render_template('register.html.j2', form = form) 
 
 
 

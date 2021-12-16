@@ -16,11 +16,8 @@ class RegisterForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
-        # MUST BE LIKE THIS VALIDATE_FIELDNAME
-    def validate_email(form, field):                                #give me only the first result returns 1 user object
+    def validate_email(form, field):       
         same_email_user = User.query.filter_by(email = field.data).first()
-                        # SELECT * FROM user WHERE email = ???
-                        # filter_by always gives a list
         if same_email_user:
             raise ValidationError("Email is Already in Use")
 
